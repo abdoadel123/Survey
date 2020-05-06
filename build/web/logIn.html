@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Login Form</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript">
+
+            function Validate()
+            {
+
+
+                if (document.myForm.username.value == "")
+                {
+                    alert("Please Enter your name!");
+                    document.myForm.username.focus();
+                    return false;
+                }
+
+                else if (document.myForm.password.value == "")
+                {
+                    alert("Please Enter your password!");
+                    return false;
+                }
+                return(true);
+            }
+
+        </script>
+        <script type="text/javascript">
+
+            function validate()
+            {
+                var emailID = document.myForm2.email.value;
+                atpos = emailID.indexOf("@");
+                dotpos = emailID.lastIndexOf(".");
+                var mess1=document.getElementById("show").innerHTML;
+                var mess2=document.getElementById("showw").innerHTML;
+                if (document.myForm2.username.value == ""||mess1=="User already exists")
+                {
+                    if(mess1=="User already exists"){
+                        alert("Please Enter another user ");
+                    document.myForm.username.focus();
+                    return false;
+                }
+                    alert("Please Enter your name!");
+                    document.myForm.username.focus();
+                    return false;
+                }
+
+                else if (document.myForm2.password.value == "")
+                {
+                    alert("Please Enter your password!");
+                    return false;
+                } else if (document.myForm2.password.length < 6)
+                {
+                    alert("Password must be at least 6 characters long.");
+                    return false;
+                }
+                else if(emailID==""||mess2=="mail already used")
+                {
+                    if(mess2=="mail already used"){
+                        alert("Please Enter another mail");
+                    document.myForm.username.focus();
+                    return false;
+                }
+                    alert("Please Enter Your Email");
+                    return false;
+                } 
+                else if (atpos < 1 || (dotpos - atpos < 2))
+                {
+                    alert("Please Enter a Correct Email Format")
+                    document.myForm2.email.focus();
+                    return false;
+                }
+                return(true);
+            }
+
+
+
+        </script>
+        <script>
+            function checkReg() {
+                var xmlrequ = new XMLHttpRequest();
+                var username = document.getElementById("use").value;
+                xmlrequ.open("POST", "checkUser?username=" + username, true);
+                xmlrequ.send();
+                xmlrequ.onreadystatechange = function(){
+                    if (xmlrequ.status == 200 && xmlrequ.readyState == 4) {
+                        document.getElementById("show").innerHTML = xmlrequ.responseText;
+                    }
+                }
+             }
+             function checkMail() {
+                var xmlrequ = new XMLHttpRequest();
+                var mail = document.getElementById("mail").value;
+                xmlrequ.open("POST", "checkMail?mail=" +mail , true);
+                xmlrequ.send();
+                xmlrequ.onreadystatechange = function(){
+                    if (xmlrequ.status == 200 && xmlrequ.readyState == 4) {
+                        document.getElementById("showw").innerHTML = xmlrequ.responseText;
+                    }
+                }
+             }
+        </script>
+
+    </head>
+    <body>
+
+
+        <div class="login-box">
+
+            <img src="avatar.png" class="avatar">
+            <h1>Login to our site</h1>
+            <form name="myForm" action="logCheck.jsp" method="POST" onsubmit="return(Validate());">
+                <p>User Name
+                </p>
+                <input type="text" name="username" placeholder="Enter Username">
+                <p>Password</p>
+                <input type="password" name="password" placeholder="Enter Password">
+                <input type="submit" name="submit" value="Login">
+            </form>
+
+
+        </div>
+
+        <div class="container">
+            <div class="vertical-line">&nbsp;</div>
+        </div>
+
+        <div class="registeration-box">
+            <img src="avatar.png" class="avatar">
+            <h1>Registeration Form</h1>
+            <form  name="myForm2" method="POST" onsubmit="return(validate());" action="register.jsp">
+                <p>User Name
+                </p>
+                <input type="text" id="use" name="username" placeholder="Enter Username" onblur="checkReg()">
+                <div id="show"></div>
+                <p>Password</p>
+                <input type="password" name="password" placeholder="Enter Password">
+                <p>First Name
+                </p>
+                <input type="text" name="firstname" placeholder="Enter Your First Name">
+                <p>Last Name
+                </p>
+                <input type="text" name="lastname" placeholder="Enter Your Last Name">
+                <p>Email
+                </p>
+                <input type="text" id="mail" name="email" placeholder="Enter Your Email" onblur="checkMail()">
+                <div id="showw"></div>
+                <input type="submit" name="submit" value="Sign Up">
+            </form>
+        </div>
+
+
+
+
+
+
+    </body>
+</html>

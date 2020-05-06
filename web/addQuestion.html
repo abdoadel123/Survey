@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="SurveyStyle.css">
+       
+        <title>Survey Form</title>
+        
+        <script>
+            function storeQuestion(){
+                var serv=document.getElementById("surveyName").value;
+                //alert(serv);
+                var xmlrequ = new XMLHttpRequest();
+                 
+                xmlrequ.open("GET", "StoreServey?surveyname="+serv+"&question="+questions+"&ans="+ans, true);
+                //alert(questions);
+                xmlrequ.send();
+                //alert(ans);
+            }
+            function storeSurvey(){
+                var serv=document.getElementById("surveyName").value;
+                alert(serv);
+                window.location.href = "store?surveyname="+serv+"&type=survey";
+            }
+        </script>
+    </head>
+    
+    <body>
+       
+                <div class="login-box">
+                    
+                    <img src="survey.png" class="avatar">
+            <h1>Make your own survey</h1>
+            <h3> Enter Servey Name : </h3>
+            <input type="text" id="surveyName">
+        <h3> Choose A Question Type : </h3>
+        <div class="addQuestionSpace">
+        <select id="type" onchange="view();" >
+            <option id="typeoption"></option>
+            <option id="typeoption" name="type" value="mcq"> MSQ Question</option>
+            <option id="typeoption" name="type" value="checkbox">CheckBox Question</option>
+            <option id="typeoption" name="type" value="free">Free Question</option>
+        </select>
+                    <div id="quesionSpace"> </div>
+
+            </div>
+        <br>
+        <input type="button" value="Save Survey" onclick="storeSurvey()">
+        </div>
+        <script>
+            var ans = '',questions=' ';
+            function addAns(){
+                var xmlrequ = new XMLHttpRequest();
+                var question = document.getElementById("quesionSpace").value;
+                var answer=document.getElementById("ans").value;
+                xmlrequ.open("GET", "StoreServey?quesionSpace"+question+"&ans="+answer, true);
+                xmlrequ.send();
+            }
+            
+            
+            function view() {
+                var type = document.getElementById("type");
+                var option = document.getElementById("typeoption");
+                var quesionSpace = document.getElementById("quesionSpace");
+                var McqQuestion, Answer, QuestionHeader, AnswerHeader,
+                        ansSpace, AddMcqChoice, AddMcqQuestion,saveSurveyBTN;
+
+                if (type.value == "mcq")
+                {
+                    quesionSpace.textContent="";
+                    Answer = '';
+                    QuestionHeader = document.createElement("h3");
+                    QuestionHeader.textContent = "Enter Quesion :";
+
+                    McqQuestion = document.createElement("input");
+                    McqQuestion.setAttribute("id", "question");
+                    McqQuestion.setAttribute("type", "text");
+                    McqQuestion.setAttribute("name", "question");
+
+                    AnswerHeader = document.createElement("h3");
+                    AnswerHeader.textContent = "Enter Answers :";
+
+                    ansSpace = document.createElement("div");
+                    ansSpace.setAttribute("id", "ansSpace");
+
+                    Answer = document.createElement("input");
+                    Answer.setAttribute("id", "Ans");
+                    Answer.setAttribute("type", "text");
+
+                    AddMcqChoice = document.createElement("button");
+                    AddMcqChoice.setAttribute("id", "addMSQAns");
+                    AddMcqChoice.textContent = "Add Answer";
+                    AddMcqChoice.onclick = function () {
+                        addChoice();
+                    };
+
+
+
+                    AddMcqQuestion = document.createElement("button");
+                    AddMcqQuestion.setAttribute("id", "endAns");
+                    AddMcqQuestion.textContent = "Finish";
+                    
+                    
+                    AddMcqQuestion.onclick = function () {
+                        storeQuestion();
+                    };
+                    
+//                    var saveSurveyBTN = document.createElement("button");
+//                    saveSurveyBTN.setAttribute("id", "saveSurvey");
+//                    saveSurveyBTN.textContent = "Save Survey";
+//                    saveSurveyBTN.onclick = function () {
+//                        saveSurvey();
+//                    };
+
+                    quesionSpace.appendChild(QuestionHeader);
+                    quesionSpace.appendChild(McqQuestion);
+                    quesionSpace.appendChild(AnswerHeader)
+                    quesionSpace.appendChild(Answer);
+                    quesionSpace.appendChild(AddMcqChoice);
+                    quesionSpace.appendChild(AddMcqQuestion);
+                    quesionSpace.appendChild(saveSurveyBTN);
+
+
+                } else if (type.value == "free")
+                {
+                    quesionSpace.textContent="";
+                    QuestionHeader = document.createElement("h3");
+                    QuestionHeader.textContent = "Enter Quesion :";
+
+                    var free = document.createElement("input");
+                    free.setAttribute("id", "question");
+                    free.setAttribute("type", "text");
+                    free.setAttribute("name", "question");
+                    
+                    var addfreeQuestion = document.createElement("button");
+                    addfreeQuestion.setAttribute("id", "addfreequestion");
+                    addfreeQuestion.textContent = "Save Question ";
+                    addfreeQuestion.onclick = function () {
+                        freeManager();
+                    };
+                    
+                    
+                    
+                    quesionSpace.appendChild(QuestionHeader);
+                    quesionSpace.appendChild(free);
+                    quesionSpace.appendChild(addfreeQuestion);
+                    quesionSpace.appendChild(saveSurveyBTN);
+                } 
+                else if (type.value == "checkbox")
+                {
+                    quesionSpace.textContent="";
+                    Answer = '';
+                    QuestionHeader = document.createElement("h3");
+                    QuestionHeader.textContent = "Enter Quesion :";
+
+                    McqQuestion = document.createElement("input");
+                    McqQuestion.setAttribute("id", "question");
+                    McqQuestion.setAttribute("type", "text");
+                    McqQuestion.setAttribute("name", "question");
+
+                    AnswerHeader = document.createElement("h3");
+                    AnswerHeader.textContent = "Enter Answers :";
+
+                    ansSpace = document.createElement("div");
+                    ansSpace.setAttribute("id", "ansSpace");
+
+                    Answer = document.createElement("input");
+                    Answer.setAttribute("id", "Ans");
+                    Answer.setAttribute("type", "text");
+                 
+                    
+
+                    AddMcqChoice = document.createElement("button");
+                    AddMcqChoice.setAttribute("id", "addMSQAns");
+                    AddMcqChoice.textContent = "Add Answer";
+                    AddMcqChoice.onclick = function () {
+                        addChoice();
+                    };
+
+
+
+                    AddMcqQuestion = document.createElement("button");
+                    AddMcqQuestion.setAttribute("id", "endAns");
+                    AddMcqQuestion.textContent = "Finish";
+                    
+                    
+                    AddMcqQuestion.onclick = function () {
+                        storeQuestion();
+                    };
+
+
+                    quesionSpace.appendChild(QuestionHeader);
+                    quesionSpace.appendChild(McqQuestion);
+                    quesionSpace.appendChild(AnswerHeader)
+                    quesionSpace.appendChild(Answer);
+                    quesionSpace.appendChild(AddMcqChoice);
+                    quesionSpace.appendChild(AddMcqQuestion);
+                    quesionSpace.appendChild(saveSurveyBTN);
+
+
+                    
+                }
+
+            }
+
+
+
+            function  addChoice()
+            {
+                           
+                questions=document.getElementById("question").value;
+                ans = ans + document.getElementById("Ans").value + ',';
+                document.getElementById("Ans").value='';
+                console.log(questions);
+                console.log(ans);
+//                if(document.getElementById("ans")!=null){
+//                document.getElementById("ans").value=" ";
+//            }
+               
+            }
+
+            function  freeManager()
+            {
+                questions=document.getElementById("question").value;
+                console.log(questions);
+                var form =document.getElementById("questionForm");
+                form.textContent="";
+                
+                var ques=document.createElement('input');
+                ques.setAttribute("name","question");
+                ques.setAttribute("type","hidden");
+                ques.setAttribute("value",questions);
+                
+                var type=document.createElement('input');
+                type.setAttribute("name","type");
+                type.setAttribute("type","hidden");
+                type.setAttribute("value","free");
+                form.appendChild(ques);
+                form.appendChild(type);
+                
+                questions='';
+                form.submit();
+            }
+            
+            function msqManager()
+            {
+                
+                var form =document.getElementById("questionForm");
+                form.textContent="";
+                
+                var ques=document.createElement('input');
+                ques.setAttribute("name","question");
+                ques.setAttribute("type","hidden");
+                ques.setAttribute("value",questions);
+                
+                var answer=document.createElement('input');
+                answer.setAttribute("name","answer");
+                answer.setAttribute("type","hidden");
+                answer.setAttribute("value",ans);
+                
+                var type=document.createElement('input');
+                type.setAttribute("name","type");
+                type.setAttribute("type","hidden");
+                type.setAttribute("value","msq");
+                
+                form.appendChild(ques);
+                form.appendChild(answer);
+                form.appendChild(type);
+                form.submit();
+                
+                questions='';
+                ans='';
+            }
+            
+            
+           
+            
+            
+            
+           
+
+
+
+        </script>
+    </body>
+</html>
